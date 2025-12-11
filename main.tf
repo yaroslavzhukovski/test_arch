@@ -20,3 +20,23 @@ module "hub_network" {
     Owner       = var.owner
   }
 }
+
+module "firewall" {
+  source = "./modules/network/firewall"
+
+  firewall_name            = "${var.project_name}-${var.environment}-afw"
+  resource_group_name      = azurerm_resource_group.platform.name
+  location                 = azurerm_resource_group.platform.location
+  azure_firewall_subnet_id = module.hub_network.subnet_ids["AzureFirewallSubnet"]
+
+  sku_tier = "Standard" # or "Premium"
+
+  # When you have Log Analytics module ready, pass its id here instead of null
+  log_analytics_workspace_id = null
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Owner       = var.owner
+  }
+}
