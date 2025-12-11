@@ -16,7 +16,7 @@ variable "azure_firewall_subnet_id" {
   description = "ID of AzureFirewallSubnet in Hub VNet"
 }
 
-variable "firewall_tier" {
+variable "sku_tier" {
   type    = string
   default = "Standard" # или "Premium"
 }
