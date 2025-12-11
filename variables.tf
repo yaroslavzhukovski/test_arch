@@ -29,3 +29,13 @@ variable "owner" {
   default     = "Yaroslav"
 
 }
+
+variable "hub_vnet_address_space" {
+  type        = list(string)
+  description = "Address space for the hub virtual network"
+}
+
+variable "hub_subnets" {
+  description = "Map of subnet name to address prefix for hub VNet"
+  type        = map(string)
+}
