@@ -7,6 +7,6 @@ locals {
 
 resource "azurerm_subnet_route_table_association" "hub_rt_assoc" {
   for_each       = local.subnets_for_routing
-  subnet_id      = azurerm_subnet.subnets[each.key].id
+  subnet_id      = azurerm_subnet.hub_subnets[each.key].id
   route_table_id = azurerm_route_table.hub_rt.id
 }
