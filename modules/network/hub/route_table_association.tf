@@ -1,7 +1,8 @@
 locals {
   subnets_for_routing = {
     for name, cidr in var.subnets :
-    name => cidr if name != "AzureFirewallSubnet"
+    name => cidr
+    if name != "AzureFirewallSubnet" && name != "GatewaySubnet"
   }
 }
 

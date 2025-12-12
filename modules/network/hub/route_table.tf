@@ -14,5 +14,5 @@ resource "azurerm_route" "default_to_firewall" {
   next_hop_type       = "VirtualAppliance"
 
   # Здесь будет IP Firewall — добавим позже
-  next_hop_in_ip_address = "0.0.0.0"
+  next_hop_in_ip_address = module.firewall.private_ip
 }
