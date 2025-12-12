@@ -39,3 +39,19 @@ variable "hub_subnets" {
   description = "Map of subnet name to address prefix for hub VNet"
   type        = map(string)
 }
+
+variable "onprem_gateway_public_ip" {
+  type    = string
+  default = "203.0.113.10" # placeholder (TEST-NET-3)
+}
+
+variable "onprem_address_prefixes" {
+  type    = list(string)
+  default = ["192.168.10.0/24"] # placeholder
+}
+
+variable "vpn_shared_key" {
+  type      = string
+  sensitive = true
+
+}

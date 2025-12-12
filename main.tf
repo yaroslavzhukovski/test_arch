@@ -50,10 +50,14 @@ module "vpn_gateway" {
 
   gateway_subnet_id = module.hub_network.subnet_ids["GatewaySubnet"]
 
-  sku           = "VpnGw1AZ"
-  enable_bgp    = true
-  bgp_asn       = 65515
-  active_active = false
+  sku                      = "VpnGw1AZ"
+  enable_bgp               = true
+  bgp_asn                  = 65515
+  active_active            = false
+  enable_s2s               = true
+  onprem_gateway_public_ip = var.onprem_gateway_public_ip
+  onprem_address_prefixes  = var.onprem_address_prefixes
+  shared_key               = var.vpn_shared_key
 
   tags = {
     Project     = var.project_name

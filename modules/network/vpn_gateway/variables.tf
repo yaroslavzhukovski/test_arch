@@ -41,3 +41,28 @@ variable "tags" {
   type    = map(string)
   default = {}
 }
+
+variable "enable_s2s" {
+  type        = bool
+  description = "Enable Site-to-Site resources (Local Network Gateway + Connection)"
+  default     = false
+}
+
+variable "onprem_gateway_public_ip" {
+  type        = string
+  description = "Public IP of the on-prem VPN device"
+  default     = null
+}
+
+variable "onprem_address_prefixes" {
+  type        = list(string)
+  description = "Address prefixes on the on-prem side"
+  default     = []
+}
+
+variable "shared_key" {
+  type        = string
+  description = "Pre-shared key for the VPN connection (placeholder now, real later)"
+  default     = null
+  sensitive   = true
+}
