@@ -41,6 +41,16 @@ module "firewall" {
   }
 }
 
+resource "azurerm_route" "default_to_firewall" {
+  name                = "default-to-firewall"
+  resource_group_name = azurerm_resource_group.platform.name
+  route_table_name    = module.hub_network.route_table_name
+  address_prefix      = "0.0.0.0/0"
+  next_hop_type       = "VirtualAppliance"
+
+
+  next_hop_in_ip_address = module.firewall.private_ip
+}
 module "vpn_gateway" {
   source = "./modules/network/vpn_gateway"
 
