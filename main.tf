@@ -40,3 +40,24 @@ module "firewall" {
     Owner       = var.owner
   }
 }
+
+module "vpn_gateway" {
+  source = "./modules/network/vpn_gateway"
+
+  name                = "${var.project_name}-${var.environment}-vpngw"
+  resource_group_name = azurerm_resource_group.platform.name
+  location            = azurerm_resource_group.platform.location
+
+  gateway_subnet_id = module.hub_network.subnet_ids["GatewaySubnet"]
+
+  sku           = "VpnGw1AZ"
+  enable_bgp    = true
+  bgp_asn       = 65515
+  active_active = false
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Owner       = var.owner
+  }
+}
