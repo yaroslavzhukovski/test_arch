@@ -11,3 +11,6 @@ output "subnet_nsg_ids" {
   value = { for k, v in azurerm_network_security_group.subnet_nsg : k => v.id }
 }
 
+output "vnet_name" {
+  value = azurerm_virtual_network.hub.name
+}

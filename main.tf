@@ -89,7 +89,8 @@ module "hub_spoke_peering" {
   resource_group_name = azurerm_resource_group.platform.name
 
   hub_vnet_id   = module.hub_network.vnet_id
-  hub_vnet_name = "${var.project_name}-${var.environment}-hub-vnet"
+  hub_vnet_name = module.hub_network.vnet_name
+
 
   spoke_vnet_id   = module.spoke_network.vnet_id
   spoke_vnet_name = module.spoke_network.vnet_name
@@ -100,14 +101,27 @@ module "hub_spoke_peering" {
   allow_gateway_transit = true
   use_remote_gateways   = true
 }
-
 locals {
   hub_subnets_for_routing = {
     for name, id in module.hub_network.subnet_ids :
     name => id
     if name != "AzureFirewallSubnet" && name != "GatewaySubnet"
   }
+
+  split_routes = {
+    "default-to-firewall" = {
+      address_prefix = "0.0.0.0/0"
+      next_hop_type  = "VirtualAppliance"
+      next_hop_ip    = module.firewall.private_ip
+    }
+
+    "onprem" = {
+      address_prefix = var.onprem_address_prefixes[0]
+      next_hop_type  = "VirtualNetworkGateway"
+    }
+  }
 }
+
 module "hub_route_table" {
   source = "./modules/network/route_table"
 
@@ -117,13 +131,27 @@ module "hub_route_table" {
 
   subnet_ids = local.hub_subnets_for_routing
 
-  routes = {
-    "default-to-firewall" = {
-      address_prefix = "0.0.0.0/0"
-      next_hop_type  = "VirtualAppliance"
-      next_hop_ip    = module.firewall.private_ip
-    }
+  routes = local.split_routes
+
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Owner       = var.owner
   }
+}
+
+module "spoke_route_table" {
+  source = "./modules/network/route_table"
+
+  name                = "${var.project_name}-${var.environment}-spoke-rt"
+  location            = azurerm_resource_group.platform.location
+  resource_group_name = azurerm_resource_group.platform.name
+
+  subnet_ids = module.spoke_network.subnet_ids
+
+  routes = local.split_routes
+
 
   tags = {
     Project     = var.project_name
