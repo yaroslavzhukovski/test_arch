@@ -19,3 +19,5 @@ spoke_subnets = {
   app_backend  = "10.20.2.0/24"
 }
 
+admin_username = "azureuser"
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUFFSAJCQVzQnQZ8alhObp0XRPk55qe9F6LXxYBU408bkOPa9IJ/7zorb9TKdoRJ9+JObUXl9r6+XF9CGgMWOmbTA/tR0HmEfPz+Pz2s9o6wks0frRu1Z0m9tlpNfZpIDO1huiXcYZFKZiv2FKe3OfUXkJMF1QUla6oJQRQFKxb9VBX/BtNXvM66KCUAEC4HSjkqN0kaUs6wcPTmVBV/NzrMbFiMgtgD0CKKF6nlB0EJUzj4fqo7igQZwfh6VE/wmmPMPZ9DPXtKLA9nF2FYVeb8JBQ6MrEBpt+oWyhcxMBFBbU4ADTXjiOkdheo3u1vTZgVcf7IkeuhPgCOYCf0tR"
