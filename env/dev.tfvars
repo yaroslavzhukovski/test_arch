@@ -15,5 +15,7 @@ onprem_address_prefixes  = ["192.168.10.0/24"]
 spoke_vnet_address_space = ["10.20.0.0/16"]
 
 spoke_subnets = {
-  app = "10.20.1.0/24"
+  app_frontend = "10.20.1.0/24"
+  app_backend  = "10.20.2.0/24"
 }
+
