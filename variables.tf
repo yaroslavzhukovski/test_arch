@@ -55,3 +55,11 @@ variable "vpn_shared_key" {
   sensitive = true
 
 }
+
+variable "spoke_vnet_address_space" {
+  type = list(string)
+}
+
+variable "spoke_subnets" {
+  type = map(string)
+}
