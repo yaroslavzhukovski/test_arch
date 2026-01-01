@@ -63,3 +63,13 @@ variable "spoke_vnet_address_space" {
 variable "spoke_subnets" {
   type = map(string)
 }
+
+variable "admin_username" {
+  type        = string
+  description = "Admin username for Linux VMs/VMSS"
+}
+
+variable "ssh_public_key" {
+  type        = string
+  description = "SSH public key used for Linux authentication"
+}

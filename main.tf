@@ -102,6 +102,26 @@ module "hub_spoke_peering" {
   use_remote_gateways   = true
 }
 locals {
+  vmss_cloud_init = <<-EOT
+#cloud-config
+package_update: true
+packages:
+  - nginx
+runcmd:
+  - systemctl enable nginx
+  - systemctl start nginx
+  - bash -lc 'cat > /var/www/html/index.html <<EOF
+<html>
+  <head><title>VMSS backend</title></head>
+  <body style="font-family: Arial;">
+    <h1>✅ Hello from VMSS</h1>
+    <p>Environment: ${var.environment}</p>
+    <p>Project: ${var.project_name}</p>
+  </body>
+</html>
+EOF'
+EOT
+
   hub_subnets_for_routing = {
     for name, id in module.hub_network.subnet_ids :
     name => id
@@ -158,4 +178,24 @@ module "spoke_route_table" {
     Environment = var.environment
     Owner       = var.owner
   }
+}
+
+module "spoke_vmss" {
+  source = "./modules/compute/vmss_flexible"
+
+  name                = "${var.project_name}-${var.environment}-spoke-vmss"
+  location            = azurerm_resource_group.platform.location
+  resource_group_name = azurerm_resource_group.platform.name
+
+  subnet_id       = module.spoke_network.subnet_ids["app_backend"]
+  backend_pool_id = module.spoke_ilb.backend_pool_id
+
+  instances = 2
+  sku_name  = "Standard_B2s"
+
+  admin_username = var.admin_username
+  ssh_public_key = var.ssh_public_key
+  custom_data    = local.vmss_cloud_init
+
+  tags = local.tags
 }
