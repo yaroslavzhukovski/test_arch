@@ -220,3 +220,25 @@ module "spoke_ilb" {
     Owner       = var.owner
   }
 }
+
+module "storage" {
+  source = "./modules/storage_account"
+
+  location            = azurerm_resource_group.platform.location
+  resource_group_name = azurerm_resource_group.platform.name
+  tags                = local.tags
+
+  storage_account_name       = "${var.project_name}${var.environment}sa01"
+  vnet_id                    = module.spoke_network.vnet_id
+  vnet_name                  = module.spoke_network.vnet_name
+  private_endpoint_subnet_id = module.spoke_network.subnet_ids["app_backend"]
+
+  containers = {
+    app_container1 = { name = "app" }
+  }
+  queues = {}
+  shares = {}
+  tables = {}
+
+}
+
