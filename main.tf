@@ -228,7 +228,7 @@ module "storage" {
   resource_group_name = azurerm_resource_group.platform.name
   tags                = local.tags
 
-  storage_account_name       = "${var.project_name}${var.environment}sa01"
+  storage_account_name       = "${var.environment}storageformytestapp"
   vnet_id                    = module.spoke_network.vnet_id
   vnet_name                  = module.spoke_network.vnet_name
   private_endpoint_subnet_id = module.spoke_network.subnet_ids["app_backend"]
